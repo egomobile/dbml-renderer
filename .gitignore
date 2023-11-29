@@ -1,5 +1,9 @@
-/node_modules/
-/.test-output/
-/.compare-test-output.html
-/.idea
-/.vscode
+.DS_Store
+node_modules/
+/sandbox.ts
+/docs
+/lib
+/sandbox/
+sandbox.*
+/TODOs.md
+/src/dbml.js

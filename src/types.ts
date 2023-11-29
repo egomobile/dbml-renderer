@@ -1,3 +1,18 @@
+/// Copyright 2023 softwaretechnik.berlin
+/// https://github.com/softwaretechnik-berlin/dbml-renderer/blob/ca0302a91d26abc9f13b23da523c2d1a312f9c31/package.json#L22C7-L22C7
+/// 
+/// Permission to use, copy, modify, and/or distribute this software for any
+/// purpose with or without fee is hereby granted, provided that the above
+/// copyright notice and this permission notice appear in all copies.
+/// 
+/// THE SOFTWARE IS PROVIDED “AS IS” AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+/// WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+/// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+/// SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+/// WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+/// ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+/// IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
 import z from "zod";
 
 export const Comment = z.object({
@@ -15,7 +30,9 @@ export type Options = z.infer<typeof Options>;
 export const Project = z.object({
   type: z.literal("project"),
   name: z.string().nullable(),
-  options: Options.nullable().transform((v) => v || {}),
+  options: Options.nullable().transform((v) => {
+    return v || {};
+  }),
 });
 export type Project = z.infer<typeof Project>;
 
@@ -23,7 +40,9 @@ export const Column = z.object({
   type: z.literal("column"),
   name: z.string(),
   data: z.string(),
-  settings: Settings.nullable().transform((v) => v || {}),
+  settings: Settings.nullable().transform((v) => {
+    return v || {};
+  }),
 });
 export type Column = z.infer<typeof Column>;
 
@@ -38,8 +57,10 @@ export const TableIndices = z.object({
   indices: z.array(
     z.object({
       columns: z.array(z.string()),
-      settings: Settings.nullable().transform((v) => v || {}),
-    })
+      settings: Settings.nullable().transform((v) => {
+        return v || {};
+      }),
+    }),
   ),
 });
 export type TableIndices = z.infer<typeof TableIndices>;
@@ -50,7 +71,9 @@ export const Table = z.object({
   name: z.string(),
   alias: z.string().nullable(),
   items: z.array(z.union([Comment, Column, TableOption, TableIndices])),
-  settings: Settings.nullable().transform((v) => v || {}),
+  settings: Settings.nullable().transform((v) => {
+    return v || {};
+  }),
 });
 export type Table = z.infer<typeof Table>;
 
@@ -71,7 +94,9 @@ export type TableGroup = z.infer<typeof TableGroup>;
 export const EnumValue = z.object({
   type: z.literal("value"),
   name: z.string(),
-  settings: Settings.nullable().transform((v) => v || {}),
+  settings: Settings.nullable().transform((v) => {
+    return v || {};
+  }),
 });
 export type EnumValue = z.infer<typeof EnumValue>;
 
@@ -102,7 +127,9 @@ export const Ref = z.object({
   cardinality: Cardinality,
   from: ColumnRef,
   to: ColumnRef,
-  settings: Settings.nullable().transform((v) => v || {}),
+  settings: Settings.nullable().transform((v) => {
+    return v || {};
+  }),
 });
 export type Ref = z.infer<typeof Ref>;
 

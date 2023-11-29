@@ -1,3 +1,18 @@
+/// Copyright 2023 softwaretechnik.berlin
+/// https://github.com/softwaretechnik-berlin/dbml-renderer/blob/ca0302a91d26abc9f13b23da523c2d1a312f9c31/package.json#L22C7-L22C7
+/// 
+/// Permission to use, copy, modify, and/or distribute this software for any
+/// purpose with or without fee is hereby granted, provided that the above
+/// copyright notice and this permission notice appear in all copies.
+/// 
+/// THE SOFTWARE IS PROVIDED “AS IS” AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+/// WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+/// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+/// SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+/// WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+/// ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+/// IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
 import {
   NormalizedEnum,
   NormalizedGroup,
@@ -78,9 +93,9 @@ class ColumnRenderer implements RowRenderer {
     this.name = column.name;
     this.port = port;
 
-    this.indices = (table.items.find(
-      (item) => item.type === "indices"
-    ) as TableIndices) || { type: "indices", indices: [] };
+    this.indices = (table.items.find((item) => {
+      return item.type === "indices";
+    }) as TableIndices) || { type: "indices", indices: [] };
   }
 
   dataType(): string {
@@ -89,10 +104,15 @@ class ColumnRenderer implements RowRenderer {
 
   toDot(): string {
     const relatedIndexSettings = this.indices.indices
-      .filter((index) => index.columns.includes(this.actual.name))
-      .map((index) => index.settings);
-    const isPk = (settings: Settings): boolean =>
-      "pk" in settings || "primary key" in settings;
+      .filter((index) => {
+        return index.columns.includes(this.actual.name);
+      })
+      .map((index) => {
+        return index.settings;
+      });
+    const isPk = (settings: Settings): boolean => {
+      return "pk" in settings || "primary key" in settings;
+    };
 
     let name = this.actual.name;
     const settings = this.actual.settings || {};
@@ -131,7 +151,7 @@ class CompositeKeyRowRenderer implements RowRenderer {
     return `<TR><TD PORT="${
       this.port
     }" BGCOLOR="#e7e2dd"><FONT COLOR="#1d71b8"><I>    ${this.columns.join(
-      ", "
+      ", ",
     )}    </I></FONT></TD></TR>`;
   }
 }
@@ -167,28 +187,32 @@ class TableRenderer {
   }
 
   private findColumn(columnName: string) {
-    return this.renderers.find((c) => c.name === columnName);
+    return this.renderers.find((c) => {
+      return c.name === columnName;
+    });
   }
 
   refAll(columns: string[]): string {
-    //TODO: check that all columns exist
+    // TODO: check that all columns exist
 
     const columnIndex: Record<string, any> = {};
-    columns.forEach(
-      (columnName) =>
-        (columnIndex[columnName] =
-          this.renderers.findIndex((c) => c.name === columnName) + 1 ||
-          Number.MAX_SAFE_INTEGER)
-    );
+    columns.forEach((columnName) => {
+      return (columnIndex[columnName] =
+        this.renderers.findIndex((c) => {
+          return c.name === columnName;
+        }) + 1 || Number.MAX_SAFE_INTEGER);
+    });
 
     const name = columns
-      .sort((a, b) => columnIndex[a] - columnIndex[b])
+      .sort((a, b) => {
+        return columnIndex[a] - columnIndex[b];
+      })
       .join(",");
 
     const column = this.findColumn(name);
     if (!column) {
       this.renderers.push(
-        new CompositeKeyRowRenderer(`f${this.renderers.length}`, name, columns)
+        new CompositeKeyRowRenderer(`f${this.renderers.length}`, name, columns),
       );
     }
     return this.ref(name);
@@ -205,7 +229,11 @@ class TableRenderer {
       : `tooltip="${this.displayName()}\\n${escapeString(note)}";`;
 
     return `"${this.displayName()}" [id="${this.displayName()}";${tooltip}label=<<TABLE BORDER="2" COLOR="#29235c" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
-      ${this.renderers.map((column) => column.toDot()).join("\n")}
+      ${this.renderers
+        .map((column) => {
+          return column.toDot();
+        })
+        .join("\n")}
     </TABLE>>];`;
   }
 }
@@ -216,7 +244,9 @@ class GroupRenderer {
 
   constructor(group: NormalizedGroup) {
     this.name = group.actual.name || "-unnamed-";
-    this.tables = group.tables.map((table) => new TableRenderer(table));
+    this.tables = group.tables.map((table) => {
+      return new TableRenderer(table);
+    });
   }
 
   toDot(): string {
@@ -225,7 +255,11 @@ class GroupRenderer {
       style=filled;
       color="#dddddd";
 
-      ${this.tables.map((table) => table.toDot()).join("\n")}
+      ${this.tables
+        .map((table) => {
+          return table.toDot();
+        })
+        .join("\n")}
     }`;
   }
 }
@@ -261,8 +295,12 @@ class RefRenderer {
             to: ref.from,
           };
 
-    this.fromTable = tables.find((t) => t.table === ref.from.table)!;
-    this.toTable = tables.find((t) => t.table === ref.to.table)!;
+    this.fromTable = tables.find((t) => {
+      return t.table === ref.from.table;
+    })!;
+    this.toTable = tables.find((t) => {
+      return t.table === ref.to.table;
+    })!;
 
     this.fromRef = this.findRef(this.fromTable, ref.actual.from.columns);
     this.toRef = this.findRef(this.toTable, ref.actual.to.columns);
@@ -303,7 +341,11 @@ class EnumRenderer {
   toDot(): string {
     return `"${this.name()}" [id=${this.name()};label=<<TABLE BORDER="2" COLOR="#29235c" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
     <TR><TD PORT="f0" BGCOLOR="#29235c"><FONT COLOR="#ffffff"><B>       ${this.name()}       </B></FONT></TD></TR>
-    ${this.enumType.values.map((name, i) => this.valueDot(name, i)).join("\n")}
+    ${this.enumType.values
+      .map((name, i) => {
+        return this.valueDot(name, i);
+      })
+      .join("\n")}
     </TABLE>>];`;
   }
 
@@ -334,24 +376,34 @@ class DbmlRenderer {
   private enumRefs: EnumReferenceRenderer[];
 
   constructor(dbml: NormalizedOutput) {
-    this.groups = dbml.groups.map((group) => new GroupRenderer(group));
-    this.ungroupedTables = dbml.ungroupedTables.map(
-      (table) => new TableRenderer(table)
-    );
+    this.groups = dbml.groups.map((group) => {
+      return new GroupRenderer(group);
+    });
+    this.ungroupedTables = dbml.ungroupedTables.map((table) => {
+      return new TableRenderer(table);
+    });
 
     const allTables = this.groups
-      .flatMap((group) => group.tables)
+      .flatMap((group) => {
+        return group.tables;
+      })
       .concat(this.ungroupedTables);
 
-    this.refs = dbml.refs.map((ref) => new RefRenderer(ref, allTables));
-    this.enums = dbml.enums.map((e) => new EnumRenderer(e));
+    this.refs = dbml.refs.map((ref) => {
+      return new RefRenderer(ref, allTables);
+    });
+    this.enums = dbml.enums.map((e) => {
+      return new EnumRenderer(e);
+    });
 
     this.enumRefs = this.groups
-      .flatMap((group) => enumRefs(group.tables, this.enums))
+      .flatMap((group) => {
+        return enumRefs(group.tables, this.enums);
+      })
       .concat(enumRefs(this.ungroupedTables, this.enums));
   }
 
-  //--light-blue: #1d71b8;--dark-blue: #29235c;--grey: #e7e2dd;--white: #ffffff;--orange: #ea5b0c
+  // --light-blue: #1d71b8;--dark-blue: #29235c;--grey: #e7e2dd;--white: #ffffff;--orange: #ea5b0c
   toDot(): string {
     return `digraph dbml {
       rankdir=LR;
@@ -359,20 +411,42 @@ class DbmlRenderer {
       node [penwidth=0, margin=0, fontname="helvetica", fontsize=32, fontcolor="#29235c"];
       edge [fontname="helvetica", fontsize=32, fontcolor="#29235c", color="#29235c"];
 
-      ${this.enums.map((e) => e.toDot()).join("\n")}
-      ${this.groups.map((group) => group.toDot()).join("\n")}
-      ${this.ungroupedTables.map((table) => table.toDot()).join("\n")}
-      ${this.refs.map((ref) => ref.toDot()).join("\n")}
-      ${this.enumRefs.map((def) => def.toDot()).join("\n")}
+      ${this.enums
+        .map((e) => {
+          return e.toDot();
+        })
+        .join("\n")}
+      ${this.groups
+        .map((group) => {
+          return group.toDot();
+        })
+        .join("\n")}
+      ${this.ungroupedTables
+        .map((table) => {
+          return table.toDot();
+        })
+        .join("\n")}
+      ${this.refs
+        .map((ref) => {
+          return ref.toDot();
+        })
+        .join("\n")}
+      ${this.enumRefs
+        .map((def) => {
+          return def.toDot();
+        })
+        .join("\n")}
     }
 `;
   }
 }
 
-const enumRefs = (tables: TableRenderer[], enums: EnumRenderer[]) =>
-  tables.flatMap((table) =>
-    table.columns.flatMap((column) => {
-      const enumType = enums.find((e) => e.name() === column.dataType());
+const enumRefs = (tables: TableRenderer[], enums: EnumRenderer[]) => {
+  return tables.flatMap((table) => {
+    return table.columns.flatMap((column) => {
+      const enumType = enums.find((e) => {
+        return e.name() === column.dataType();
+      });
       if (!enumType) {
         return [];
       }
@@ -381,8 +455,9 @@ const enumRefs = (tables: TableRenderer[], enums: EnumRenderer[]) =>
       const enumRef = enumType.selfRef();
 
       return new EnumReferenceRenderer(columnRef, enumRef);
-    })
-  );
+    });
+  });
+};
 
 const escapeString = (text: string): string => {
   text = JSON.stringify(text);

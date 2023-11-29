@@ -1,25 +1,24 @@
-[![npm version](https://img.shields.io/npm/v/@softwaretechnik/dbml-renderer)](https://www.npmjs.com/package/@softwaretechnik/dbml-renderer) [![.github/workflows/build.yml](https://github.com/softwaretechnik-berlin/dbml-renderer/actions/workflows/build.yml/badge.svg)](https://github.com/softwaretechnik-berlin/dbml-renderer/actions/workflows/build.yml)
+[![npm version](https://img.shields.io/npm/v/@egomobile/dbml-renderer)](https://www.npmjs.com/package/@egomobile/dbml-renderer) [![.github/workflows/build.yml](https://github.com/egomobile/dbml-renderer/actions/workflows/build.yml/badge.svg)](https://github.com/egomobile/dbml-renderer/actions/workflows/build.yml)
+
+# @egomobile/dbml-renderer
 
 `dbml-renderer` renders [DBML](https://www.dbml.org/home/) files to SVG images.
-It provides a command line interface, so that you can easily use it in your
-documentation toolchain.
 
-## Command Line Usage
+> The tool was orginally implemented as CLI tool by [softwaretechnik.berlin
+](https://github.com/softwaretechnik-berlin/dbml-renderer).
 
-```bash
-npm install -g @softwaretechnik/dbml-renderer
-```
-
-It can then be used to render DBML files like so:
+## Install
 
 ```bash
-dbml-renderer -i example.dbml -o output.svg
+npm install @egomobile/dbml-renderer
 ```
 
-For instance, the following input will produce the image below:
+For instance, the following code will produce the image below:
 
-```dbml
-Table users {
+```typescript
+import { parseDMBL } from "@egomobile/dbml-renderer";
+
+const dbml = `Table users {
     id integer
     username varchar
     role varchar
@@ -34,7 +33,11 @@ Table posts {
     created_at timestamp
 }
 
-Ref: posts.user_id > users.id
+Ref: posts.user_id > users.id`
+
+console.log(
+    parseDMBL(dbml, "svg")
+);
 ```
 
 ![Posts example output](examples/user-posts.dbml.svg)

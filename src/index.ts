@@ -1,55 +1,16 @@
-#!/usr/bin/env node
+/// Copyright 2023 softwaretechnik.berlin
+/// https://github.com/softwaretechnik-berlin/dbml-renderer/blob/ca0302a91d26abc9f13b23da523c2d1a312f9c31/package.json#L22C7-L22C7
+/// 
+/// Permission to use, copy, modify, and/or distribute this software for any
+/// purpose with or without fee is hereby granted, provided that the above
+/// copyright notice and this permission notice appear in all copies.
+/// 
+/// THE SOFTWARE IS PROVIDED “AS IS” AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+/// WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+/// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+/// SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+/// WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+/// ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+/// IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-import fs from "fs";
-import yargs from "yargs";
-import { hideBin } from "yargs/helpers";
-import { run } from "./api";
-import { Format } from "./renderer";
-
-const args = yargs(hideBin(process.argv))
-  .scriptName("dbml-renderer")
-  .usage("Usage: $0 [options]")
-  .example("$0 -i schema.dbml", "Render the given file and output to stdout")
-  .alias("h", "help")
-  .option("input", {
-    demandOption: true,
-    alias: "i",
-    type: "string",
-    default: "-",
-    description: "DBML file",
-    coerce: (arg) => {
-      if (!fs.existsSync(arg) && !(arg === "-")) {
-        throw new Error(`Could not find file '${arg}'`);
-      }
-      return arg === "-"
-        ? fs.readFileSync(0, "utf-8")
-        : fs.readFileSync(arg, "utf-8");
-    },
-  })
-  .option("format", {
-    alias: "f",
-    type: "string",
-    choices: ["dot", "svg"],
-    default: "svg",
-    description: "Output format",
-    coerce: (arg) => arg as Format,
-  })
-  .option("output", {
-    alias: "o",
-    type: "string",
-    default: "-",
-    description: "Output file",
-    coerce: (arg) => {
-      return arg === "-"
-        ? console.log
-        : (content: string) => fs.writeFileSync(arg, content);
-    },
-  })
-  .parseSync();
-
-try {
-  args.output(run(args.input, args.format));
-} catch (e) {
-  console.error((e as any).message || e);
-  process.exit(1);
-}
+export { run as parseDMBL } from './api';
