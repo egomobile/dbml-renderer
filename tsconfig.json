@@ -13,5 +13,5 @@
       "esModuleInterop": true,
       "sourceMap": false
     },
-    "exclude": ["node_modules", "sandbox", "lib"]
+    "exclude": ["node_modules", "sandbox", "lib", "sandbox.ts"]
   }

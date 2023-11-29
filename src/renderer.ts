@@ -22,10 +22,14 @@ import {
 } from "./checker";
 import { tableName } from "./common";
 import { Cardinality, Column, Settings, Table, TableIndices } from "./types";
+import { instance as vizInstance } from "@viz-js/viz";
 
-export type Format = "dot" | "svg";
+export type Format = "svg" | "dot";
 
-export const render = (input: NormalizedOutput, format: Format): string => {
+export const render = async (
+  input: NormalizedOutput,
+  format: Format = "svg",
+): Promise<string> => {
   const dotString = dot(input);
 
   if (format === "dot") {
@@ -34,9 +38,10 @@ export const render = (input: NormalizedOutput, format: Format): string => {
     // script engine.
     return dotString;
   }
-  const vizRenderStringSync = require("@aduh95/viz.js/sync");
 
-  return vizRenderStringSync(dotString, {
+  const viz = await vizInstance();
+
+  return viz.renderString(dotString, {
     engine: "dot",
     format: format,
   });

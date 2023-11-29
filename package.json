@@ -1,6 +1,6 @@
 {
   "name": "@egomobile/dbml-renderer",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "engines": {
     "node": ">=18.0.0"
   },
@@ -8,8 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/egomobile/dbml-renderer.git"
   },
-  "main": "lib/api.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/index.js",
   "files": [
     "lib",
     "!lib/**/__tests__/**/*",
@@ -23,7 +22,7 @@
     "format": "prettier --write src/ package.json",
     "format:check": "prettier --check src/ package.json",
     "generate:parser": "peggy src/dbml.pegjs --format=commonjs",
-    "sandbox": "nodemon --watch './sandbox.ts' --exec node -r ts-node/register --inspect=0.0.0.0:9229 ./sandbox.ts",
+    "sandbox": "NODE_OPTIONS='--inspect=0.0.0.0:9229' tsx ./sandbox.ts",
     "test": "exit 0",
     "test2": "ava"
   },
@@ -40,11 +39,12 @@
     "prettier": "3.1.0",
     "prettier-plugin-organize-imports": "3.2.4",
     "ts-node": "10.9.1",
+    "tsx": "4.6.0",
     "typedoc": "0.25.4",
     "typescript": "5.3.2"
   },
   "dependencies": {
-    "@aduh95/viz.js": "3.7.0",
+    "@viz-js/viz": "3.2.3",
     "zod": "3.22.4"
   },
   "bugs": {

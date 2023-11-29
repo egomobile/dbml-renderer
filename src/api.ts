@@ -17,6 +17,6 @@ import { check } from "./checker";
 import { parse } from "./parser";
 import { Format, render } from "./renderer";
 
-export const run = (input: string, format: Format): string => {
+export const run = (input: string, format: Format = "svg"): Promise<string> => {
   return render(check(parse(input)), format);
 };
