@@ -1,12 +1,22 @@
 {
   "name": "@egomobile/dbml-renderer",
   "version": "2.0.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/egomobile/dbml-renderer.git"
   },
-  "main": "./lib/api.js",
-  "types": "./lib/api.d.ts",
+  "main": "lib/api.js",
+  "types": "lib/api.d.ts",
+  "files": [
+    "lib",
+    "!lib/**/__tests__/**/*",
+    "!lib/**/*.map",
+    "!lib/**/setupTests.*",
+    "README.md"
+  ],
   "scripts": {
     "build": "del ./lib && tsc",
     "docs:generate": "del ./docs && typedoc --out ./docs ./src",

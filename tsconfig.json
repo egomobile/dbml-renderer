@@ -1,21 +1,16 @@
 {
     "extends": "@egomobile/tsconfig",
     "compilerOptions": {
-        "allowJs": true,
-        "outDir": "lib",
-        "rootDir": "src",
-        "target": "es2019",
-        "lib": [
-            "es2019"
-        ],
-        "moduleResolution": "node",
-        "declaration": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "esModuleInterop": true,
-        "sourceMap": false
+      "outDir": "lib",
+      "rootDir": "src",
+      "target": "es2022",
+      "lib": ["es2022"],
+      "moduleResolution": "node",
+      "declaration": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "esModuleInterop": true,
+      "sourceMap": false
     },
-    "exclude": [
-        "node_modules"
-    ]
-}
+    "exclude": ["node_modules", "sandbox", "lib"]
+  }
