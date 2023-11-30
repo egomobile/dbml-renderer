@@ -1,4 +1,4 @@
-[![npm version](https://img.shields.io/npm/v/@egomobile/dbml-renderer)](https://www.npmjs.com/package/@egomobile/dbml-renderer) [![.github/workflows/publish.yml](https://github.com/egomobile/dbml-renderer/actions/workflows/publish.yml/badge.svg)
+[![npm version](https://img.shields.io/npm/v/@egomobile/dbml-renderer)](https://www.npmjs.com/package/@egomobile/dbml-renderer) ![.github/workflows/publish.yml](https://github.com/egomobile/dbml-renderer/actions/workflows/publish.yml/badge.svg)
 
 # @egomobile/dbml-renderer
 
